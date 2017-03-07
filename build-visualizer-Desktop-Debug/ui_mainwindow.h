@@ -30,7 +30,7 @@ public:
     QWidget *centralWidget;
     QPushButton *openFS;
     QPushButton *pushButton;
-    QLabel *label;
+    QLabel *error_lbl;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -48,9 +48,9 @@ public:
         pushButton = new QPushButton(centralWidget);
         pushButton->setObjectName(QStringLiteral("pushButton"));
         pushButton->setGeometry(QRect(240, 50, 88, 34));
-        label = new QLabel(centralWidget);
-        label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(350, 10, 141, 18));
+        error_lbl = new QLabel(centralWidget);
+        error_lbl->setObjectName(QStringLiteral("error_lbl"));
+        error_lbl->setGeometry(QRect(10, 270, 141, 18));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -73,7 +73,7 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", Q_NULLPTR));
         openFS->setText(QApplication::translate("MainWindow", "browse", Q_NULLPTR));
         pushButton->setText(QApplication::translate("MainWindow", "play song", Q_NULLPTR));
-        label->setText(QApplication::translate("MainWindow", "TextLabel", Q_NULLPTR));
+        error_lbl->setText(QApplication::translate("MainWindow", "TextLabel", Q_NULLPTR));
     } // retranslateUi
 
 };

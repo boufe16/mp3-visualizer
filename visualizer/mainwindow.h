@@ -2,7 +2,17 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include <QPushButton>
+#include <QFileDialog>
+#include <QDebug>
+#include <QFile>
+#include <QDataStream>
+#include <QTextStream>
+#include <cstdio>
+#include <QBitArray>
+#include <QAudioOutput>
+#include <QAudioDeviceInfo>
+#include <alsa/asoundlib.h>
 namespace Ui {
 class MainWindow;
 }
@@ -15,7 +25,12 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void on_openFS_clicked();
+    void handleStateChanged(QAudio::State, QFile *file, QAudioOutput *audio);
+
 private:
+
     Ui::MainWindow *ui;
 };
 

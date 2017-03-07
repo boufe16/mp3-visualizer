@@ -40,11 +40,11 @@
      <string>play song</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="error_lbl">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>10</y>
+      <x>10</x>
+      <y>270</y>
       <width>141</width>
       <height>18</height>
      </rect>

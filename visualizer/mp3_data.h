@@ -1,7 +1,6 @@
 #ifndef MP3_DATA_H
 #define MP3_DATA_H
 
-
 class mp3_data
 {
 public:
