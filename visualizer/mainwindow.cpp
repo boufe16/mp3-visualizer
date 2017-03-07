@@ -85,16 +85,22 @@ void MainWindow::on_openFS_clicked()
     //data chunk
     QByteArray subChunk2ID;
     quint32  subChunk2sz;
+    int i=0;
+    while(subChunk2ID != "data")//seek until data chunk found
+    {
+        subChunk2ID[0]=(bytes[36+i]);
+        subChunk2ID[1]=(bytes[37+i]);
+        subChunk2ID[2]=(bytes[38+i]);
+        subChunk2ID[3]=(bytes[39+i]);
+         subChunk2sz =  ((unsigned char)bytes[43+i]<<24)|((unsigned char)bytes[42+i]<<16)|((unsigned char)bytes[41+i]<<8)|((unsigned char)bytes[40+i]);
+        qDebug()<< "chunk ID: " << subChunk2ID;
+        qDebug()<< "chunk Size" <<subChunk2sz;
+        i++;
+    }
 
-    subChunk2ID[0]=(bytes[36]);
-    subChunk2ID[1]=(bytes[37]);
-    subChunk2ID[2]=(bytes[38]);
-    subChunk2ID[3]=(bytes[39]);
-    subChunk2sz =  ((unsigned char)bytes[43]<<24)|((unsigned char)bytes[42]<<16)|((unsigned char)bytes[41]<<8)|((unsigned char)bytes[40]);
-    qDebug()<< subChunk2ID;
-    qDebug()<< subChunk2sz;
 
-    bytes.remove(0,44);//remove the headers, this is now purely the data;
+    //(i-1) because of post-increment
+    bytes.remove(0,44+(i-1));//remove the headers, this is now purely the data;
 
 
     // do something..
@@ -122,8 +128,8 @@ void MainWindow::on_openFS_clicked()
    // snd_output_t *output = NULL;
     qDebug()<<(subChunk2sz)/4;
 
-    unsigned short leftBuffer[(subChunk2sz)/4];
-    for(int i=0; i<subChunk2sz/4; i++)
+    unsigned short *leftBuffer= new unsigned short[(subChunk2sz)/4];
+    for(int i=0; i<(subChunk2sz/4); i++)
     {
        int j = i*4;
         leftBuffer[i] = ((unsigned char)bytes[j+1]<<8) | ((unsigned char)bytes[j]);
