@@ -24,8 +24,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    mp3_data.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    mp3_data.h
 
 FORMS    += mainwindow.ui
