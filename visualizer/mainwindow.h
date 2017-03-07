@@ -13,6 +13,7 @@
 #include <QAudioOutput>
 #include <QAudioDeviceInfo>
 #include <alsa/asoundlib.h>
+#include <audio_data.h>
 namespace Ui {
 class MainWindow;
 }

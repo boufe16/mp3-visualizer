@@ -26,9 +26,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    mp3_data.cpp
+    audio_data.cpp
+
 
 HEADERS  += mainwindow.h \
-    mp3_data.h
+    audio_data.h
 
 FORMS    += mainwindow.ui
+
+CONFIG += console
+
+
+QMAKE_CFLAGS += -lasound \ -lm \ -lc
+
+
+
+unix: CONFIG += link_pkgconfig
+unix: PKGCONFIG +=  alsa

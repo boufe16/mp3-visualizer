@@ -13,9 +13,9 @@ MAKEFILE      = Makefile
 CC            = gcc
 CXX           = g++
 DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_REENTRANT
-CFLAGS        = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
+CFLAGS        = -pipe -lasound \ -lm \ -lc -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../visualizer -I. -isystem /usr/include/qt -isystem /usr/include/qt/QtMultimedia -isystem /usr/include/qt/QtWidgets -isystem /usr/include/qt/QtGui -isystem /usr/include/qt/QtNetwork -isystem /usr/include/qt/QtCore -I. -isystem /usr/include/libdrm -I. -isystem /usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/lib/qt/mkspecs/linux-g++
+INCPATH       = -I../visualizer -I. -isystem /usr/include/alsa -isystem /usr/include/qt -isystem /usr/include/qt/QtMultimedia -isystem /usr/include/qt/QtWidgets -isystem /usr/include/qt/QtGui -isystem /usr/include/qt/QtNetwork -isystem /usr/include/qt/QtCore -I. -isystem /usr/include/libdrm -I. -isystem /usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/lib/qt/mkspecs/linux-g++
 QMAKE         = /usr/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -36,7 +36,7 @@ DISTNAME      = visualizer1.0.0
 DISTDIR = /home/felix/mp3Viz/mp3-visualizer/build-visualizer-Desktop-Debug/.tmp/visualizer1.0.0
 LINK          = g++
 LFLAGS        = 
-LIBS          = $(SUBLIBS) -lQt5Multimedia -lQt5Widgets -lQt5Gui -lQt5Network -lQt5Core -lGL -lpthread -lpulse-mainloop-glib -lpulse -lglib-2.0 
+LIBS          = $(SUBLIBS) -lasound -lQt5Multimedia -lQt5Widgets -lQt5Gui -lQt5Network -lQt5Core -lGL -lpthread -lpulse-mainloop-glib -lpulse -lglib-2.0 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -50,10 +50,10 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../visualizer/main.cpp \
 		../visualizer/mainwindow.cpp \
-		../visualizer/mp3_data.cpp moc_mainwindow.cpp
+		../visualizer/audio_data.cpp moc_mainwindow.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
-		mp3_data.o \
+		audio_data.o \
 		moc_mainwindow.o
 DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/common/unix.conf \
@@ -352,6 +352,7 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/features/default_pre.prf \
 		/usr/lib/qt/mkspecs/features/resolve_config.prf \
 		/usr/lib/qt/mkspecs/features/default_post.prf \
+		/usr/lib/qt/mkspecs/features/link_pkgconfig.prf \
 		/usr/lib/qt/mkspecs/features/qml_debug.prf \
 		/usr/lib/qt/mkspecs/features/warn_on.prf \
 		/usr/lib/qt/mkspecs/features/qt.prf \
@@ -367,9 +368,9 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/features/yacc.prf \
 		/usr/lib/qt/mkspecs/features/lex.prf \
 		../visualizer/visualizer.pro ../visualizer/mainwindow.h \
-		../visualizer/mp3_data.h ../visualizer/main.cpp \
+		../visualizer/audio_data.h ../visualizer/main.cpp \
 		../visualizer/mainwindow.cpp \
-		../visualizer/mp3_data.cpp
+		../visualizer/audio_data.cpp
 QMAKE_TARGET  = visualizer
 DESTDIR       = 
 TARGET        = visualizer
@@ -678,6 +679,7 @@ Makefile: ../visualizer/visualizer.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf 
 		/usr/lib/qt/mkspecs/features/default_pre.prf \
 		/usr/lib/qt/mkspecs/features/resolve_config.prf \
 		/usr/lib/qt/mkspecs/features/default_post.prf \
+		/usr/lib/qt/mkspecs/features/link_pkgconfig.prf \
 		/usr/lib/qt/mkspecs/features/qml_debug.prf \
 		/usr/lib/qt/mkspecs/features/warn_on.prf \
 		/usr/lib/qt/mkspecs/features/qt.prf \
@@ -996,6 +998,7 @@ Makefile: ../visualizer/visualizer.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf 
 /usr/lib/qt/mkspecs/features/default_pre.prf:
 /usr/lib/qt/mkspecs/features/resolve_config.prf:
 /usr/lib/qt/mkspecs/features/default_post.prf:
+/usr/lib/qt/mkspecs/features/link_pkgconfig.prf:
 /usr/lib/qt/mkspecs/features/qml_debug.prf:
 /usr/lib/qt/mkspecs/features/warn_on.prf:
 /usr/lib/qt/mkspecs/features/qt.prf:
@@ -1031,8 +1034,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../visualizer/mainwindow.h ../visualizer/mp3_data.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../visualizer/main.cpp ../visualizer/mainwindow.cpp ../visualizer/mp3_data.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../visualizer/mainwindow.h ../visualizer/audio_data.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../visualizer/main.cpp ../visualizer/mainwindow.cpp ../visualizer/audio_data.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../visualizer/mainwindow.ui $(DISTDIR)/
 
 
@@ -1068,10 +1071,11 @@ moc_predefs.h: /usr/lib/qt/mkspecs/features/data/dummy.cpp
 compiler_moc_header_make_all: moc_mainwindow.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp
-moc_mainwindow.cpp: ../visualizer/mainwindow.h \
+moc_mainwindow.cpp: ../visualizer/audio_data.h \
+		../visualizer/mainwindow.h \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/felix/mp3Viz/mp3-visualizer/visualizer -I/usr/include/qt -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I. -I/usr/include/c++/6.2.1 -I/usr/include/c++/6.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/6.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.2.1/include-fixed -I/usr/include ../visualizer/mainwindow.h -o moc_mainwindow.cpp
+	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/felix/mp3Viz/mp3-visualizer/visualizer -I/usr/include/alsa -I/usr/include/qt -I/usr/include/qt/QtMultimedia -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I. -I/usr/include/c++/6.2.1 -I/usr/include/c++/6.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/6.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.2.1/include-fixed -I/usr/include ../visualizer/mainwindow.h -o moc_mainwindow.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -1092,15 +1096,17 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 
 ####### Compile
 
-main.o: ../visualizer/main.cpp ../visualizer/mainwindow.h
+main.o: ../visualizer/main.cpp ../visualizer/mainwindow.h \
+		../visualizer/audio_data.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../visualizer/main.cpp
 
 mainwindow.o: ../visualizer/mainwindow.cpp ../visualizer/mainwindow.h \
+		../visualizer/audio_data.h \
 		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../visualizer/mainwindow.cpp
 
-mp3_data.o: ../visualizer/mp3_data.cpp ../visualizer/mp3_data.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mp3_data.o ../visualizer/mp3_data.cpp
+audio_data.o: ../visualizer/audio_data.cpp ../visualizer/audio_data.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o audio_data.o ../visualizer/audio_data.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

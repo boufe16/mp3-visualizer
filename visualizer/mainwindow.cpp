@@ -96,7 +96,10 @@ void MainWindow::on_openFS_clicked()
 
     bytes.remove(0,44);//remove the headers, this is now purely the data;
 
-    QAudioOutput* audio;
+
+    // do something..
+
+      //QAudioOutput* audio;
     QAudioFormat format;
     format.setSampleRate(sampleRate);
     format.setChannelCount(numChannels);
@@ -104,16 +107,72 @@ void MainWindow::on_openFS_clicked()
     format.setCodec("audio/PCM");
     format.setByteOrder(QAudioFormat::LittleEndian);
     format.setSampleType(QAudioFormat::UnSignedInt);
-    QAudioDeviceInfo info(QAudioDeviceInfo::defaultOutputDevice());
-    if(!info.isFormatSupported(format))
-    {
-        ui->error_lbl->setText("'not supported bud'");
-        return;
-    }
-    audio = new QAudioOutput(format,this);
+    //QAudioDeviceInfo info(QAudioDeviceInfo::defaultOutputDevice());
+//    if(!info.isFormatSupported(format))
+//    {
+//        ui->error_lbl->setText("'not supported bud'");
+//        return;
+//    }
+    //audio = new QAudioOutput(format,this);
     //connect(audio, SIGNAL(stateChanged(QAudio::State)),this, SLOT(handleStateChanged(QAudio::State, &file, &audio)));
-    audio->start(&file);
+    //audio->start(&file);
+    //uses my filestructure to creade the left and right channels
+   // audio_data AD(bytes);
+    qDebug()<<"finished copying";
+   // snd_output_t *output = NULL;
+    qDebug()<<(subChunk2sz)/4;
+
+    unsigned short leftBuffer[(subChunk2sz)/4];
+    for(int i=0; i<subChunk2sz/4; i++)
+    {
+       int j = i*4;
+        leftBuffer[i] = ((unsigned char)bytes[j+1]<<8) | ((unsigned char)bytes[j]);
+
+    }
+    int err;
+
+    snd_pcm_t *handle;
+    snd_pcm_sframes_t frames;
+//    unsigned char buffer[32*1024];
+//                for (i = 0; i < sizeof(buffer); i++)
+//                        buffer[i] = random() & 0xff;
+    if((err = snd_pcm_open(&handle, "default", SND_PCM_STREAM_PLAYBACK,0))<0){
+        qDebug() <<"playback open error : " << snd_strerror(err);
+        exit(EXIT_FAILURE);
+    }
+    if((err = snd_pcm_set_params(handle,
+                                 SND_PCM_FORMAT_S16_LE,
+                                 SND_PCM_ACCESS_RW_INTERLEAVED,
+                                 1,//this here is the # of channels, I'm gonna need to make this stereo but right now I don't know how
+                                 sampleRate,
+                                 1,
+                                 500000))<0){
+        qDebug() <<"playback open error : " << snd_strerror(err);
+        exit(EXIT_FAILURE);
+    }
+
+    qDebug()<<"sizeof left buff" <<sizeof(leftBuffer);
+
+    for(int i=0; i<3;i++)
+    {
+        frames= snd_pcm_writei(handle, leftBuffer,subChunk2sz/4);
+        if(frames<0)
+            frames = snd_pcm_recover(handle,frames,0);
+        if(frames<0)
+        {
+            qDebug()<<"sbd_pcm_writei failed" ; //snd_sterror(frames)
+            break;
+        }
+        if(frames>0 && frames<(subChunk2sz/4))
+        {
+            qDebug()<<"Short write (expected  "<<sizeof(leftBuffer) << "wrote" << frames;
+        }
+    }
+    snd_pcm_close(handle);
+
+
 }
+
 
 void MainWindow::handleStateChanged(QAudio::State newState, QFile *file, QAudioOutput *audio)
 {
@@ -132,3 +191,4 @@ void MainWindow::handleStateChanged(QAudio::State newState, QFile *file, QAudioO
         }
     }
 }
+
