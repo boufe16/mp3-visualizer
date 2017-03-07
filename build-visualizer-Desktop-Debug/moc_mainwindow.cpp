@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[9];
-    char stringdata0[95];
+    QByteArrayData data[4];
+    char stringdata0[52];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -34,17 +34,11 @@ static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_MainWindow = {
 QT_MOC_LITERAL(0, 0, 10), // "MainWindow"
 QT_MOC_LITERAL(1, 11, 17), // "on_openFS_clicked"
 QT_MOC_LITERAL(2, 29, 0), // ""
-QT_MOC_LITERAL(3, 30, 18), // "handleStateChanged"
-QT_MOC_LITERAL(4, 49, 13), // "QAudio::State"
-QT_MOC_LITERAL(5, 63, 6), // "QFile*"
-QT_MOC_LITERAL(6, 70, 4), // "file"
-QT_MOC_LITERAL(7, 75, 13), // "QAudioOutput*"
-QT_MOC_LITERAL(8, 89, 5) // "audio"
+QT_MOC_LITERAL(3, 30, 21) // "on_playButton_clicked"
 
     },
     "MainWindow\0on_openFS_clicked\0\0"
-    "handleStateChanged\0QAudio::State\0"
-    "QFile*\0file\0QAudioOutput*\0audio"
+    "on_playButton_clicked"
 };
 #undef QT_MOC_LITERAL
 
@@ -63,11 +57,11 @@ static const uint qt_meta_data_MainWindow[] = {
 
  // slots: name, argc, parameters, tag, flags
        1,    0,   24,    2, 0x08 /* Private */,
-       3,    3,   25,    2, 0x08 /* Private */,
+       3,    0,   25,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 4, 0x80000000 | 5, 0x80000000 | 7,    2,    6,    8,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -79,25 +73,11 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->on_openFS_clicked(); break;
-        case 1: _t->handleStateChanged((*reinterpret_cast< QAudio::State(*)>(_a[1])),(*reinterpret_cast< QFile*(*)>(_a[2])),(*reinterpret_cast< QAudioOutput*(*)>(_a[3]))); break;
+        case 1: _t->on_playButton_clicked(); break;
         default: ;
         }
-    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        switch (_id) {
-        default: *reinterpret_cast<int*>(_a[0]) = -1; break;
-        case 1:
-            switch (*reinterpret_cast<int*>(_a[1])) {
-            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
-            case 0:
-                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QAudio::State >(); break;
-            case 2:
-                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QAudioOutput* >(); break;
-            case 1:
-                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QFile* >(); break;
-            }
-            break;
-        }
     }
+    Q_UNUSED(_a);
 }
 
 const QMetaObject MainWindow::staticMetaObject = {
@@ -130,7 +110,7 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         _id -= 2;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         if (_id < 2)
-            qt_static_metacall(this, _c, _id, _a);
+            *reinterpret_cast<int*>(_a[0]) = -1;
         _id -= 2;
     }
     return _id;

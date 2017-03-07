@@ -9,9 +9,6 @@
 #include <QDataStream>
 #include <QTextStream>
 #include <cstdio>
-#include <QBitArray>
-#include <QAudioOutput>
-#include <QAudioDeviceInfo>
 #include <alsa/asoundlib.h>
 #include <audio_data.h>
 namespace Ui {
@@ -28,10 +25,12 @@ public:
 
 private slots:
     void on_openFS_clicked();
-    void handleStateChanged(QAudio::State, QFile *file, QAudioOutput *audio);
+
+
+    void on_playButton_clicked();
 
 private:
-
+    audio_data *sound;
     Ui::MainWindow *ui;
 };
 

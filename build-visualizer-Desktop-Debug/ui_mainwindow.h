@@ -29,7 +29,7 @@ class Ui_MainWindow
 public:
     QWidget *centralWidget;
     QPushButton *openFS;
-    QPushButton *pushButton;
+    QPushButton *playButton;
     QLabel *error_lbl;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
@@ -45,9 +45,9 @@ public:
         openFS = new QPushButton(centralWidget);
         openFS->setObjectName(QStringLiteral("openFS"));
         openFS->setGeometry(QRect(240, 0, 88, 34));
-        pushButton = new QPushButton(centralWidget);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setGeometry(QRect(240, 50, 88, 34));
+        playButton = new QPushButton(centralWidget);
+        playButton->setObjectName(QStringLiteral("playButton"));
+        playButton->setGeometry(QRect(240, 50, 88, 34));
         error_lbl = new QLabel(centralWidget);
         error_lbl->setObjectName(QStringLiteral("error_lbl"));
         error_lbl->setGeometry(QRect(10, 270, 141, 18));
@@ -72,7 +72,7 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", Q_NULLPTR));
         openFS->setText(QApplication::translate("MainWindow", "browse", Q_NULLPTR));
-        pushButton->setText(QApplication::translate("MainWindow", "play song", Q_NULLPTR));
+        playButton->setText(QApplication::translate("MainWindow", "play song", Q_NULLPTR));
         error_lbl->setText(QApplication::translate("MainWindow", "TextLabel", Q_NULLPTR));
     } // retranslateUi
 
