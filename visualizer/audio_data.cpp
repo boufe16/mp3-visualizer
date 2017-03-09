@@ -35,13 +35,13 @@ audio_data::audio_data(QByteArray bytes)
     {
         qDebug()<<"the file is 'fmt'";
     }
-    subchunk1Size = ((unsigned char)bytes[19]<<24) | ((unsigned char)bytes[18]<<16)|((unsigned char)bytes[17]<<8)|((unsigned char)bytes[16]);
-    audioFormat =   ((unsigned char)bytes[21]<<8)|((unsigned char)bytes[20]);
-    numChannels =   ((unsigned char)bytes[23]<<8)|((unsigned char)bytes[22]);
-    sampleRate  =   ((unsigned char)bytes[27]<<24)|((unsigned char)bytes[26]<<16)|((unsigned char)bytes[25]<<8)|((unsigned char)bytes[24]);
-    byteRate    =   ((unsigned char)bytes[31]<<24)|((unsigned char)bytes[30]<<16)|((unsigned char)bytes[29]<<8)|((unsigned char)bytes[28]);
-    blockAlign=     ((unsigned char)bytes[33]<<8)|((unsigned char)bytes[32]);
-    bitsPerSample=  ((unsigned char)bytes[35]<<8)|((unsigned char)bytes[34]);
+    subchunk1Size   =   ((unsigned char)bytes[19]<<24) | ((unsigned char)bytes[18]<<16)|((unsigned char)bytes[17]<<8)|((unsigned char)bytes[16]);
+    audioFormat     =   ((unsigned char)bytes[21]<<8)|((unsigned char)bytes[20]);
+    numChannels     =   ((unsigned char)bytes[23]<<8)|((unsigned char)bytes[22]);
+    sampleRate      =   ((unsigned char)bytes[27]<<24)|((unsigned char)bytes[26]<<16)|((unsigned char)bytes[25]<<8)|((unsigned char)bytes[24]);
+    byteRate        =   ((unsigned char)bytes[31]<<24)|((unsigned char)bytes[30]<<16)|((unsigned char)bytes[29]<<8)|((unsigned char)bytes[28]);
+    blockAlign      =   ((unsigned char)bytes[33]<<8)|((unsigned char)bytes[32]);
+    bitsPerSample   =   ((unsigned char)bytes[35]<<8)|((unsigned char)bytes[34]);
 
     //qDebug()<<subchunk1Size;//16 most of the time
     qDebug()<<  "subchunk1 size: "  <<  subchunk1Size ;

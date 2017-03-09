@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
 }
 
 MainWindow::~MainWindow()
@@ -26,14 +27,22 @@ void MainWindow::on_openFS_clicked()
     file.close();
 
     //structure which seperates different chunks and all that: audio_data.h
-    if(!sound)
-        delete sound;
-    sound = new audio_data(bytes);
+//    if(!sound)
+//        delete sound;
+//    sound = new audio_data(bytes);
+//    QGraphicsScene *scene = new QGraphicsScene;
 
+//    for(int i=1; i< sound->getNumSamples()/10; i++)
+//    {
+//        scene->addLine(i/10, bytes[i]-1,i/10+1, bytes[i]);
+//    }
+//    //graphicsView.show();
+//    ui->vision->setScene(scene);
+//    ui->vision->update();
 }
 
 
-void MainWindow::on_playButton_clicked()
+void sendSound(audio_data* sound)
 {
     int err;
 
@@ -72,4 +81,10 @@ void MainWindow::on_playButton_clicked()
         }
 
     snd_pcm_close(handle);
+}
+void MainWindow::on_playButton_clicked()
+{
+    std::thread play(sendSound, sound);
+    play.detach();
+
 }

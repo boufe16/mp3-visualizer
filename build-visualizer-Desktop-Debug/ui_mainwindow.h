@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
@@ -31,6 +32,7 @@ public:
     QPushButton *openFS;
     QPushButton *playButton;
     QLabel *error_lbl;
+    QGraphicsView *vision;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -39,22 +41,31 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(595, 367);
+        MainWindow->resize(907, 562);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         openFS = new QPushButton(centralWidget);
         openFS->setObjectName(QStringLiteral("openFS"));
-        openFS->setGeometry(QRect(240, 0, 88, 34));
+        openFS->setGeometry(QRect(10, 10, 88, 34));
         playButton = new QPushButton(centralWidget);
         playButton->setObjectName(QStringLiteral("playButton"));
-        playButton->setGeometry(QRect(240, 50, 88, 34));
+        playButton->setGeometry(QRect(10, 60, 88, 34));
         error_lbl = new QLabel(centralWidget);
         error_lbl->setObjectName(QStringLiteral("error_lbl"));
         error_lbl->setGeometry(QRect(10, 270, 141, 18));
+        vision = new QGraphicsView(centralWidget);
+        vision->setObjectName(QStringLiteral("vision"));
+        vision->setEnabled(true);
+        vision->setGeometry(QRect(100, 0, 791, 491));
+        vision->setAcceptDrops(false);
+        QBrush brush(QColor(255, 255, 255, 255));
+        brush.setStyle(Qt::NoBrush);
+        vision->setBackgroundBrush(brush);
+        vision->setInteractive(false);
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 595, 30));
+        menuBar->setGeometry(QRect(0, 0, 907, 30));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));

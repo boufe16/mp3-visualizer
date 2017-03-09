@@ -11,6 +11,11 @@
 #include <cstdio>
 #include <alsa/asoundlib.h>
 #include <audio_data.h>
+#include <thread>
+#include <QGraphicsView>
+#include <QtGui>
+#include <QGraphicsScene>
+
 namespace Ui {
 class MainWindow;
 }
@@ -30,6 +35,7 @@ private slots:
     void on_playButton_clicked();
 
 private:
+
     audio_data *sound;
     Ui::MainWindow *ui;
 };
