@@ -7,20 +7,20 @@ class audio_data
 {
 public:
     audio_data();
-     audio_data(QByteArray bytes);
-     void set_data(QByteArray bytes);
-     unsigned short * getStereoLeft();
-     unsigned short * getStereoRight();
-     unsigned short * getMono();
+     audio_data(QByteArray &bytes);
+
+
+     unsigned short * getAudio();
      unsigned long getNumSamples();
      unsigned long getSampleRate();
-
+     unsigned int getNumChannels();
 
 private:
     //short is 16 bits, whigh corresponds to the data length
     // left and right for stereo
+     //only gonna need one channel, it'll be 2x the size if its stereo or whatever, Interleaved
      unsigned short *ch0;
-     unsigned short *ch1;
+
      unsigned long numSamples;
 
      //not sure i'm going to leave it qu instead of c++ primitives

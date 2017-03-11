@@ -33,6 +33,7 @@ public:
     QPushButton *playButton;
     QLabel *error_lbl;
     QGraphicsView *vision;
+    QPushButton *pauseButton;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -62,6 +63,9 @@ public:
         brush.setStyle(Qt::NoBrush);
         vision->setBackgroundBrush(brush);
         vision->setInteractive(false);
+        pauseButton = new QPushButton(centralWidget);
+        pauseButton->setObjectName(QStringLiteral("pauseButton"));
+        pauseButton->setGeometry(QRect(10, 100, 88, 34));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -85,6 +89,7 @@ public:
         openFS->setText(QApplication::translate("MainWindow", "browse", Q_NULLPTR));
         playButton->setText(QApplication::translate("MainWindow", "play song", Q_NULLPTR));
         error_lbl->setText(QApplication::translate("MainWindow", "TextLabel", Q_NULLPTR));
+        pauseButton->setText(QApplication::translate("MainWindow", "Pause", Q_NULLPTR));
     } // retranslateUi
 
 };
