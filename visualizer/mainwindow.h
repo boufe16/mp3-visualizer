@@ -36,6 +36,8 @@ private slots:
 
     void on_pauseButton_clicked();
 
+    void on_stopButton_clicked();
+
 private:
 
     audio_data *sound;

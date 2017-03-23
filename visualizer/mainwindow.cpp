@@ -2,7 +2,6 @@
 #include "ui_mainwindow.h"
 
 
-
 //global for now though im not sure
 snd_pcm_t *handle;
 //this is the playback stream
@@ -12,7 +11,11 @@ snd_pcm_hw_params_t * 	hwparams ;
 char *pcm_name; //not sure if this is better than "default" ? ?
 
 void aSetup(audio_data* sound){
-    pcm_name = strdup("plughw:0,0");//declare name
+
+
+
+    //pcm_name = strdup("plughw:0,0");//declare name
+    pcm_name = "default";
     snd_pcm_hw_params_alloca(&hwparams);//allocate hardware param struct on the stack
 
     if (snd_pcm_open(&handle, pcm_name, stream, 0) < 0) {
@@ -21,7 +24,7 @@ void aSetup(audio_data* sound){
     if(snd_pcm_hw_params_any(handle, hwparams)<0){
         qDebug()<<"Can not configure this PCM device "<< pcm_name;
     }
-    int dir;
+    // int dir;
     unsigned int exact_rate = sound->getSampleRate();
     //snd_pcm_hw_params_set_rate_near(handle,hwparams,&exact_rate,&dir);
     int periods =2;
@@ -60,13 +63,17 @@ void aSetup(audio_data* sound){
     {
         qDebug()<<"error setting HW params"<<stderr;
     }
+}
+void startAudio(audio_data* sound)
+{
     int pcmreturn;
-     while ((pcmreturn = snd_pcm_writei(handle, sound->getAudio(), sound->getNumSamples())) < 0) {
-       snd_pcm_prepare(handle);
+    while ((pcmreturn = snd_pcm_writei(handle, sound->getAudio(), sound->getNumSamples())) < 0) {
+        snd_pcm_prepare(handle);
        //fprintf(stderr, "<<<<<<<<<<<<<<< Buffer Underrun >>>>>>>>>>>>>>>\n");
-     }
+    }
 
-   snd_pcm_drop(handle);
+    snd_pcm_drop(handle);
+
 
    //run this on audio thread
 //   while(shared_data->do_audio) {
@@ -76,10 +83,6 @@ void aSetup(audio_data* sound){
 //             fprintf(stderr, "xrun !\n");
 //         }
 //     }
-
-
-
-
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -87,7 +90,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
 }
 
 MainWindow::~MainWindow()
@@ -99,6 +101,7 @@ void MainWindow::on_openFS_clicked()
 {
     QString filename = QFileDialog::getOpenFileName(this, tr("Open File"), "/home/felix/mp3Viz");
     qDebug()<<"opening file"<<filename;
+    ui->songTitle->setText(filename);
     //file is the mp3 file (hopefully)
     QFile file(filename);
     //if we can't read file, return
@@ -110,6 +113,10 @@ void MainWindow::on_openFS_clicked()
     if(!sound)
         delete sound;
     sound = new audio_data(bytes);
+    aSetup(sound);
+    std::thread play(startAudio,sound);
+    play.detach();//run play then pause
+
 //   // delete bytes;
 //    QGraphicsScene *scene = new QGraphicsScene;
 //    int j=0;
@@ -127,63 +134,28 @@ void MainWindow::on_openFS_clicked()
 //    ui->vision->update();
 }
 
-//old setup, not proper, doesn't allow pause and all that
-//void sendSound(audio_data* sound)
-//{
-//    int err;
-//    snd_pcm_sframes_t frames;
-
-//    if((err = snd_pcm_open(&handle, "default", SND_PCM_STREAM_PLAYBACK,0))<0){
-//        qDebug() <<"playback open error : " << snd_strerror(err);
-//        exit(EXIT_FAILURE);
-//    }
-//    if((err=snd_pcm_hw_params(handle,params))){
-//        qDebug()<<"hw params: "<<snd_strerror(err);
-//   };
-//    if((err = snd_pcm_set_params(handle,
-//                                 SND_PCM_FORMAT_S16_LE,
-//                                 SND_PCM_ACCESS_RW_INTERLEAVED,
-//                                 sound->getNumChannels(),//this here is the # of channels
-//                                 sound->getSampleRate(),
-//                                 1,
-//                                 500000))<0){
-//        qDebug() <<"playback open error : " << snd_strerror(err);
-//        exit(EXIT_FAILURE);
-//    }
-
-//    qDebug()<<"sizeof left buff" <<sizeof(sound->getAudio());
-
-//    //plays file
-//        frames= snd_pcm_writei(handle, sound->getAudio(), sound->getNumSamples());
-//        if(frames<0)
-//            frames = snd_pcm_recover(handle,frames,0);
-//        if(frames<0)
-//        {
-//            qDebug()<<"sbd_pcm_writei failed" ; //snd_sterror(frames)
-
-//        }
-//        if(frames>0 && frames< sound->getNumSamples())
-//        {
-//            qDebug()<<"Short write (expected  "<<sizeof(sound->getAudio()) << "wrote" << frames;
-//        }
-
-//    snd_pcm_close(handle);
-//}
-
 void MainWindow::on_playButton_clicked()
 {
+    int err;
     //std::thread play(sendSound, sound);
     //play.detach();
-    std::thread play(aSetup,sound);
-    play.detach();
-}
-int state=0;
-void MainWindow::on_pauseButton_clicked()
-{
-    int err;
-
-    if((err= snd_pcm_pause(handle,1))){//0 == resume, 1==pause
+    if((err =snd_pcm_pause(handle,0))){//0 == resume, 1==pause
         qDebug() <<"pause Error: "<< snd_strerror(err);
 
     }
+
+}
+
+void MainWindow::on_pauseButton_clicked()
+{
+    int err;
+    if((err= snd_pcm_pause(handle,1))){//0 == resume, 1==pause
+        qDebug() <<"pause Error: "<< snd_strerror(err);
+    }
+}
+
+void MainWindow::on_stopButton_clicked()
+{
+    snd_pcm_drop(handle);
+    ui->songTitle->setText("Select a song");
 }

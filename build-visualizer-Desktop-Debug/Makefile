@@ -50,10 +50,12 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../visualizer/main.cpp \
 		../visualizer/mainwindow.cpp \
-		../visualizer/audio_data.cpp moc_mainwindow.cpp
+		../visualizer/audio_data.cpp \
+		../visualizer/filedirect.cpp moc_mainwindow.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		audio_data.o \
+		filedirect.o \
 		moc_mainwindow.o
 DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/common/unix.conf \
@@ -368,9 +370,11 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/features/yacc.prf \
 		/usr/lib/qt/mkspecs/features/lex.prf \
 		../visualizer/visualizer.pro ../visualizer/mainwindow.h \
-		../visualizer/audio_data.h ../visualizer/main.cpp \
+		../visualizer/audio_data.h \
+		../visualizer/filedirect.h ../visualizer/main.cpp \
 		../visualizer/mainwindow.cpp \
-		../visualizer/audio_data.cpp
+		../visualizer/audio_data.cpp \
+		../visualizer/filedirect.cpp
 QMAKE_TARGET  = visualizer
 DESTDIR       = 
 TARGET        = visualizer
@@ -1034,8 +1038,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../visualizer/mainwindow.h ../visualizer/audio_data.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../visualizer/main.cpp ../visualizer/mainwindow.cpp ../visualizer/audio_data.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../visualizer/mainwindow.h ../visualizer/audio_data.h ../visualizer/filedirect.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../visualizer/main.cpp ../visualizer/mainwindow.cpp ../visualizer/audio_data.cpp ../visualizer/filedirect.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../visualizer/mainwindow.ui $(DISTDIR)/
 
 
@@ -1107,6 +1111,9 @@ mainwindow.o: ../visualizer/mainwindow.cpp ../visualizer/mainwindow.h \
 
 audio_data.o: ../visualizer/audio_data.cpp ../visualizer/audio_data.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o audio_data.o ../visualizer/audio_data.cpp
+
+filedirect.o: ../visualizer/filedirect.cpp ../visualizer/filedirect.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o filedirect.o ../visualizer/filedirect.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

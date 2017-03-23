@@ -26,11 +26,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    audio_data.cpp
+    audio_data.cpp \
+    filedirect.cpp
 
 
 HEADERS  += mainwindow.h \
-    audio_data.h
+    audio_data.h \
+    filedirect.h
 
 FORMS    += mainwindow.ui
 
